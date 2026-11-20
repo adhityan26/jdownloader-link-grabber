@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Scan Download Link",
+  "description": "Pindai link di halaman, cek tujuan redirect, dan salin hasilnya dari panel samping.",
+  "version": "1.9.0",
+  "minimum_chrome_version": "116",
+  "permissions": ["activeTab", "scripting", "clipboardWrite", "sidePanel", "storage"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_title": "Buka Scan Download Link" },
+  "options_page": "settings.html",
+  "side_panel": { "default_path": "panel.html" }
+}

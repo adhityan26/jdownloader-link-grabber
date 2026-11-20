@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pengaturan · Scan Download Link</title>
+  <link rel="stylesheet" href="panel.css">
+  <script src="theme.js" defer></script>
+  <script src="myjd.js" defer></script>
+  <script src="jd-account.js" defer></script>
+  <script src="settings.js" defer></script>
+</head>
+<body class="settings-page">
+  <main id="jd-settings">
+    <h1>Pengaturan MyJDownloader</h1>
+    <div class="settings-body">
+    <p><a href="viewer.html" target="_blank" rel="noopener">Buka viewer</a></p>
+    <details id="lan-settings"><summary>Koneksi langsung ke NAS / LAN</summary>
+      <form id="lan-form"><label>Alamat Remote API JDownloader<input type="url" id="lan-origin" required placeholder="http://localhost:3128"></label>
+      <p>Pada JDownloader, buka Advanced Settings dan cari RemoteAPI. Aktifkan Deprecated API pada perangkat yang ingin diakses. Gunakan LAN tepercaya atau tunnel SSH ke localhost. API ini tidak meminta password. Batasi akses port pada perangkat.</p>
+      <button>Uji dan gunakan LAN</button></form><button id="use-cloud" hidden>Kembali ke MyJDownloader</button>
+    </details>
+    <p id="account"></p>
+    <form id="jd-login" hidden>
+      <label>Email MyJDownloader<input id="jd-email" type="email" autocomplete="username" required></label>
+      <label>Password<input id="jd-password" type="password" autocomplete="current-password" required></label>
+      <p>Sesi login dan perangkat tujuan disimpan di profil Chrome ini.</p>
+      <button class="primary">Hubungkan akun</button>
+    </form>
+    <div id="jd-connected" hidden>
+      <label>Perangkat tujuan<select id="jd-device"></select></label>
+      <div class="toolbar"><button id="jd-refresh">Muat ulang perangkat</button></div>
+    </div>
+    <form id="desktop-form" hidden>
+      <label>Alamat GUI web container (opsional)<input type="url" id="desktop-url" placeholder="http://alamat-nas:port"></label>
+      <p>Jika container menyediakan desktop JDownloader melalui browser, viewer bisa membukanya untuk dialog khusus.</p>
+      <button>Simpan alamat GUI</button>
+    </form>
+    <p id="jd-status" role="status"></p>
+    <button id="jd-logout" hidden>Keluar dan hapus data login</button>
+    <label class="theme-field">Tema tampilan
+      <select id="theme"><option value="system">Ikuti sistem</option><option value="light">Terang</option><option value="dark">Gelap</option></select>
+    </label>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>JDownloader Viewer · Scan Download Link</title>
+  <link rel="stylesheet" href="panel.css">
+  <link rel="stylesheet" href="viewer.css">
+  <script src="theme.js" defer></script>
+  <script src="myjd.js" defer></script>
+  <script src="jd-dialogs.js" defer></script>
+  <script src="jd-account.js" defer></script>
+  <script src="jd-display.js" defer></script>
+  <script src="viewer-tools.js" defer></script>
+  <script src="viewer.js" defer></script>
+</head>
+<body class="viewer">
+  <header class="mast"><div class="viewer-width head-row">
+    <div><h1>JDownloader Viewer</h1><p id="device"></p></div>
+    <div class="button-row"><a id="native-gui" hidden target="_blank" rel="noopener noreferrer">Desktop JDownloader</a><a href="settings.html" target="_blank" rel="noopener">Pengaturan</a></div>
+  </div></header>
+  <main class="viewer-width">
+    <div class="control-strip">
+      <div><strong id="engine-state">Perangkat JDownloader</strong>
+        <div class="button-row"><button data-engine="start">Mulai antrean</button><button data-engine="pause">Jeda</button><button data-engine="resume">Lanjutkan</button><button data-engine="stop">Stop</button></div>
+      </div>
+      <div class="button-row"><button id="device-tools">Kelola perangkat</button><button id="add-links" class="primary">Tambah link</button></div>
+    </div>
+    <button id="attention" hidden></button>
+    <p id="jd-status" role="status"></p>
+    <div class="viewer-controls">
+      <div role="group" aria-label="Antrean perangkat" class="queues">
+        <button id="downloads" aria-pressed="true">Downloads</button>
+        <button id="collector" aria-pressed="false">LinkGrabber</button>
+      </div>
+      <input type="search" id="search" placeholder="Cari nama paket atau folder" aria-label="Cari nama paket atau folder">
+    </div>
+    <div class="button-row"><button id="select-visible" hidden>Pilih / lepas semua yang tampil</button><button id="bulk" hidden></button></div>
+    <div class="queue-meta"><strong id="summary"></strong><span id="updated"></span></div>
+    <p id="notice" role="status">Menghubungkan ke JDownloader…</p>
+    <table id="queue-table" hidden>
+      <thead><tr><th>Paket / file</th><th>Status</th><th>Ukuran</th><th>Progres</th><th>Kecepatan</th><th>ETA</th><th>Aksi</th></tr></thead>
+      <tbody id="packages"></tbody>
+    </table>
+    <dialog id="toolbox" aria-labelledby="tool-title">
+      <div class="head-row"><h2 id="tool-title"></h2><button id="close-tool" aria-label="Tutup dialog">Tutup</button></div>
+      <div id="tool-body"></div><p role="status" id="tool-status"></p>
+    </dialog>
+  </main>
+</body>
+</html>

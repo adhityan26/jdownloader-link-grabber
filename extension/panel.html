@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Scan Download Link</title>
+  <link rel="stylesheet" href="panel.css">
+  <script src="theme.js" defer></script>
+  <script src="filenames.js" defer></script>
+  <script src="redirect.js" defer></script>
+  <script src="filters.js" defer></script>
+  <script src="myjd.js" defer></script>
+  <script src="jd-dialogs.js" defer></script>
+  <script src="jd-account.js" defer></script>
+  <script src="panel.js" defer></script>
+  <script src="jd-location.js" defer></script>
+  <script src="jd-panel.js" defer></script>
+  <script src="jd-display.js" defer></script>
+  <script src="jd-progress.js" defer></script>
+</head>
+<body class="panel">
+  <header class="mast">
+    <div class="head-row"><h1>Scan Download Link</h1><button id="jd-options" class="quiet">Pengaturan</button></div>
+    <div class="head-row viewer-entry"><div id="jd-target"></div><a href="viewer.html" target="_blank" rel="noopener">Buka viewer</a></div>
+  </header>
+  <div class="tabs" role="tablist" aria-label="Tampilan">
+    <button role="tab" id="scan-tab" aria-controls="scan-view" aria-selected="true">Hasil scan <span id="result-total"></span></button>
+    <button role="tab" id="downloads-tab" aria-controls="downloads-view" aria-selected="false" tabindex="-1">Unduhan <span id="transfer-total"></span></button>
+  </div>
+  <aside id="jd-prompt" hidden aria-labelledby="jd-prompt-title">
+    <strong id="jd-prompt-title" role="status"></strong>
+    <p id="jd-prompt-text"></p>
+    <div class="prompt-actions">
+      <button id="jd-prompt-yes">Ya, analisis link</button>
+      <button id="jd-prompt-no">Tidak</button>
+      <a href="viewer.html" target="_blank" rel="noopener noreferrer">Buka viewer</a>
+    </div>
+  </aside>
+  <main class="workspace">
+    <section id="scan-view" role="tabpanel" aria-labelledby="scan-tab">
+      <div class="scan-tools">
+        <div class="scan-line">
+          <label class="field">Jenis link<select id="mode"><option value="files">File &amp; download</option><option value="video">Video halaman</option><option value="all">Semua link</option></select></label>
+          <button id="scan">Scan tab aktif</button>
+        </div>
+        <p id="source"></p>
+        <form id="filters" role="search" aria-label="Filter hasil scan">
+          <input type="search" name="search" aria-label="Cari nama, judul atau URL" placeholder="Cari nama, judul atau URL">
+          <details class="advanced">
+            <summary>Filter lanjutan <span id="filter-count"></span></summary>
+            <div class="fields">
+              <label class="field">Pola nama / judul<input name="name" placeholder="Mis. helmet*.stl"></label>
+              <label class="field">Domain<select name="domain"><option value="">Semua domain</option></select></label>
+              <label class="field">Awalan path URL<input name="path" placeholder="Mis. /assets/models/"></label>
+              <div class="field">Ekstensi file
+                <details id="extension-menu"><summary id="extension-summary">Semua ekstensi</summary>
+                  <div id="extension-options" role="group" aria-label="Ekstensi file"></div>
+                </details>
+              </div>
+              <label class="field">Status redirect<select name="state">
+                <option value="">Semua status</option><option value="new">Belum dicek</option>
+                <option value="busy">Memeriksa</option><option value="direct">Langsung</option>
+                <option value="redirected">Dialihkan</option><option value="error">Gagal</option>
+              </select></label>
+            </div>
+            <small>Gunakan * untuk pola nama. Domain dan path dicocokkan dengan URL asal atau tujuan.</small>
+            <button type="reset" class="quiet">Reset filter</button>
+          </details>
+        </form>
+      </div>
+      <div class="list-bar">
+        <label class="check-line"><input type="checkbox" id="select-all" disabled> Pilih semua <span id="visible-count"></span></label>
+        <button id="resolve" class="quiet" title="Cek redirect semua hasil filter" disabled>Cek redirect semua</button>
+      </div>
+      <p id="empty" class="empty" hidden>Tidak ada hasil. Coba jenis link lain atau ubah filter.</p>
+      <ul id="results" aria-label="Hasil scan"></ul>
+    </section>
+    <section id="downloads-view" role="tabpanel" aria-labelledby="downloads-tab" hidden>
+      <p id="jd-idle" class="empty">Memuat status JDownloader…</p>
+      <div id="jd-progress" hidden>
+        <p id="jd-progress-note" role="status"></p>
+        <ul id="jd-files" aria-label="Status per file"></ul>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p id="status" role="status">Memindai halaman…</p>
+    <p id="jd-status" role="status"></p>
+    <div id="selection-actions" hidden>
+      <p id="counts" role="status"></p>
+      <button id="location-open" aria-haspopup="dialog">Folder: Ikuti JDownloader</button>
+      <textarea id="manual" hidden readonly aria-label="URL untuk disalin manual"></textarea>
+      <div class="actions">
+        <button id="copy" disabled>Salin link</button>
+        <button id="jd-send" disabled>Kirim ke LinkGrabber</button>
+        <button id="jd-download" class="primary" disabled>Download langsung</button>
+      </div>
+    </div>
+  </footer>
+  <dialog id="location-dialog" aria-labelledby="location-title">
+    <div class="head-row"><h2 id="location-title">Folder tujuan</h2><button id="location-cancel">Batal</button></div>
+    <button id="location-default">Gunakan default JDownloader</button>
+    <p id="location-default-path"></p>
+    <p id="location-note" role="status"></p>
+    <details open>
+      <summary>Folder tersimpan &amp; riwayat JDownloader</summary>
+      <div id="location-history" class="folder-tree"></div>
+      <form id="subfolder-form" hidden>
+        <p>Di dalam <strong id="subfolder-parent"></strong></p>
+        <label class="field">Nama subfolder<input id="subfolder-name" required autocomplete="off"></label>
+        <button type="submit">Simpan tujuan</button>
+        <button type="button" id="subfolder-cancel" class="quiet">Batal</button>
+      </form>
+    </details>
+    <details id="mount-options">
+      <summary>Jelajahi share yang di-mount</summary>
+      <label class="field">Path share di perangkat JDownloader<input id="mount-base" spellcheck="false" placeholder="/mnt/diskstation/Downloads"></label>
+      <button id="mount-open">Pilih folder yang sama di komputer ini</button>
+      <div id="mount-tree" class="folder-tree"></div>
+    </details>
+    <form id="location-form">
+      <label class="field">Path tujuan di JDownloader<input id="location-path" required spellcheck="false" autocomplete="off"></label>
+      <button class="primary">Gunakan folder ini</button>
+      <button type="button" id="save-manual-path">Simpan ke daftar</button>
+    </form>
+  </dialog>
+  <template id="row"><li>
+    <label class="check-line file-label"><input type="checkbox" class="pick"><strong class="name" dir="auto"></strong></label>
+    <div class="file-body">
+      <div class="caption" dir="auto" hidden></div>
+      <details class="addresses">
+        <summary title="Lihat URL lengkap"><span class="host"></span></summary>
+        <div class="original"></div><div class="final" hidden></div>
+      </details>
+      <div class="row-head"><span class="state"></span><button class="quiet">Cek redirect</button></div>
+    </div>
+  </li></template>
+</body>
+</html>
